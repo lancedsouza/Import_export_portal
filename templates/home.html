@@ -1,0 +1,24 @@
+<!-- templates/home.html -->
+
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1> Welcome to Pammvi Import Export Software</h1>
+        <div class="navbar">
+            <!-- Your side navbar content goes here -->
+            
+              
+
+                           
+            
+            </ul>
+        </div>
+        
+        <div class="content">
+            <!-- Your image in the middle of the page -->
+            <img src="{{ url_for('static', filename='images/image.webp') }}" alt="Your Image">
+        </div>
+    </div>
+{% endblock %}

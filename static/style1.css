@@ -1,0 +1,26 @@
+/* static_imp/style.css */
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style1.css') }}">
+
+
+.container {
+    display: flex;
+}
+
+.navbar {
+    width: 20%; /* Adjust the width of your side navbar */
+    background-color: #f1f1f1;
+    padding: 15px;
+}
+
+.content {
+    flex: 1; /* Takes up remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+img {
+    max-width: 100%; /* Ensure the image doesn't exceed its container */
+    height: auto;
+}

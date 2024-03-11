@@ -1,0 +1,49 @@
+<!-- #using wtf forms -->
+{% block content %}
+    <h2>PURCHASE ORDER</h2>
+    <form method="POST" action="{{ url_for('purchase_order1') }}">
+        {{ form.csrf_token }}
+        
+        <p>
+            {{ form.date.label }} {{ form.date() }}
+            {{ form.serial_number.label }} {{ form.serial_number() }}
+        </p>
+        
+        <p>
+            {{ form.supplier_name.label }} {{ form.supplier_name() }}
+            {{ form.supplier_address.label }} {{ form.supplier_address() }}
+        </p>
+
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>EAN Code</th>
+                    <th>Color</th>
+                    <th>Power</th>
+                    <th>Label</th>
+                    <th>Packing</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Net Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ form.product_name() }}</td>
+                    <td>{{ form.ean_code() }}</td>
+                    <td>{{ form.color() }}</td>
+                    <td>{{ form.power() }}</td>
+                    <td>{{ form.label() }}</td>
+                    <td>{{ form.packing() }}</td>
+                    <td>{{ form.qty() }}</td>
+                    <td>{{ form.unit_price() }}</td>                    
+                </tr>
+            </tbody>
+        </table>
+        
+        
+        
+        {{ form.submit() }}
+    </form>
+{% endblock %}

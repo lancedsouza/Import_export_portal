@@ -1,0 +1,235 @@
+
+{% extends "base.html" %}
+{% block title %} Purchase Order {% endblock %}
+
+{% block content %}
+<!-- Performa Invoice Form -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proforma Invoice</title>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p>
+            PAMMVI EXPORTS PRIVATE LIMITED<br>
+            54 E Fanaswadi, Gowrakshak Chawl, Sitaram Poddar Marg Kalbadevi<br>
+            Mumbai 400002, India<br>
+            Ph.: 022 26731052<br>
+            Email: info@pammvi.com
+        </p>
+
+        <h2>PURCHASE ORDER</h2>
+        <form method="POST" action="{{ url_for('purchase_order.purchase_order') }}">
+
+        <p>
+            
+            <label for="Supplier_Name">Supplier_Name</label>
+            <input type="text" name="Supplier_Name" id="Supplier_Name" required>
+
+            <label for="address"> Supplier_Address</label>
+            <input type="text" name="address" id="address" required>
+        </p>
+
+        <p>
+            
+            <strong>Ref:</strong> PEPL/2023-24/AT-03<br>
+            <strong>Date:</strong> 
+            <label for ="Date">Date </label>
+            <input type="date" name="Date" id="Date" required>
+            
+       
+        </p>
+    </form>
+
+        <table id="data-table">
+            <thead>
+                <!-- Add your table header here if needed -->
+                <tr>                    
+                    <th>Serial Number</th>
+                    <th>Name of the Item</th>
+                    <th>EAN CODE</th>
+                    <th>Color</th>
+                    <th>Power</th>
+                    <th>Label</th>
+                    <th>Packing</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Net Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add your table data dynamically here -->
+                <form method="POST" action="{{ url_for('purchase_order.purchase_order') }}">
+                <tr>
+                    
+
+                    <td>
+                        <input type="number" name="serial_number" class="sr.no" min="1" required>
+                    </td>
+                    <td>
+                        <textarea name="product_name" class="product_name" required></textarea>
+                    </td>
+                    <td>
+                        <textarea name="EAN_CODE" class="ean_code" required></textarea>
+                    </td>
+                    <td>
+                        <input type="text" name="color" class="color"  required>
+                    </td>
+                    <td>
+                        <input type="text" name="power" class="power"  required>
+                    </td>
+                    <td>
+                        <input type="text" name="label" class="label"  required>
+                    </td>
+                    <td>
+                        <input type="text" name="packing" class="packing"  required>
+                    </td>
+                    
+                    <td>
+                        <input type="number" name="Qty" class="quantity" onkeyup="quantityfunc(this)" min="1" required>
+                        
+                    </td>                    
+                    
+                    <td>
+                        <input type="number" name="Unit_Price" class="unit_price" onkeyup="pricefunc(this)"  min="1" required>
+                    </td>
+
+                    <td name="Net_Price" class="Net_Price" >0</td>
+                    <td>
+                        <input type = button class = "del_row" value="Delete Row" onclick="deleteRow(this)"></button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot><td>              
+                        <input type=button  class="add_row" value="Add Row" onclick="addRow()"></button>
+                    </td>
+                    <td><input type=button  value="Submit Order">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9" style="text-align: left;">Total </td>
+                    <td id="total"> 0</td>
+                    
+                </tr>
+            </tfoot>
+        </form>
+        </table>
+        <input type="hidden" name="total" id="total" value="0">
+        <input type="hidden" name="Net_Price" id="Net_Price" value="0">
+        <input type="hidden" name="hidden_total" id="hidden_total" value="0">
+    </div>
+
+    <script>
+         
+        var total = document.getElementById("total");
+        var net_price = document.getElementsByClassName("Net_Price");
+
+        function quantityfunc(q) {
+            var pricevalue = q.parentElement.parentElement.children[8].children[0].value;
+            q.parentElement.parentElement.children[9].innerHTML = q.value * pricevalue;
+            updateTotal();
+        }
+
+        function pricefunc(p) {
+            var quantityvalue = p.parentElement.parentElement.children[7].children[0].value;
+            p.parentElement.parentElement.children[9].innerHTML = p.value * quantityvalue;
+            updateTotal();
+        }
+
+        function addRow() {
+    var table = document.getElementById("data-table").getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(table.rows.length);
+
+    var cells = newRow.insertCell(0);
+    cells.innerHTML = '<input type="number" name="serial_number" class="sr.no" min="1" required>';
+
+    cells = newRow.insertCell(1);
+    cells.innerHTML = '<textarea name="product_name" class="product_name" required></textarea>';
+
+    cells = newRow.insertCell(2);
+    cells.innerHTML = '<textarea name="EAN_CODE" class="ean_code" required></textarea>';
+    
+    cells = newRow.insertCell(3);
+    cells.innerHTML = '<textarea name="color" class="color" required></textarea>';    
+    
+    
+    cells = newRow.insertCell(4);
+    cells.innerHTML = '<input type="text" name="power" class="power"  required>';
+    
+    cells = newRow.insertCell(5);
+    cells.innerHTML = '<input type="text" name="label" class="label"  required>';
+    
+
+    cells = newRow.insertCell(6);
+    cells.innerHTML = '<input type="text" name="packing" class="packing"  required>';
+    
+
+    cells = newRow.insertCell(7);
+    cells.innerHTML = '<input type="number" name="Qty" class="quantity" onkeyup="quantityfunc(this)" min="1" required>';
+
+    cells = newRow.insertCell(8);
+    cells.innerHTML = '<input type="number" name="Unit_Price" class="unit_price" onkeyup="pricefunc(this)"  min="1" required>';
+
+    cells = newRow.insertCell(9);
+    cells.className = "Net_Price";
+    cells.innerHTML = '0';
+
+    cells = newRow.insertCell(10);
+    cells.innerHTML = '<input type="button" class="del_row" value="Delete Row" onclick="deleteRow(this)">';
+}
+        function deleteRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            updateTotal();
+        }
+
+        function updateTotal() {
+        var cal = 0;
+        for (let i = 0; i < net_price.length; i++) {
+            cal = cal + parseFloat(net_price[i].innerHTML);
+        }
+        total.innerHTML = cal;
+
+        // Set the values of the hidden input fields
+        document.getElementById("total").value = cal;
+        document.getElementById("Net_Price").value = calculateNetPrice();
+        document.getElementById("hidden_total").value = cal;
+    }
+
+    // Add your calculateNetPrice() function if needed
+    </script>
+       
+</body>
+</html>
+{% endblock %}
