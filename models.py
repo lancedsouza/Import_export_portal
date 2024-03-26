@@ -45,18 +45,15 @@ class Products(db.Model):
 
 class PurchaseOrder(db.Model):
     __tablename__ = 'purchase_order'
-
+    reference_num=db.Column(db.String(50), nullable=False)
     order_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)  # Added date column
-    serial_number = db.Column(db.String(50), nullable=False)
-    ean_code= db.Column(db.String(50), nullable=False)
-    
+    serial_number = db.Column(db.Integer, nullable=False)
+    ean_code= db.Column(db.String(50), nullable=False)    
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.supplier_id'))
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))  # Make sure 'id' is lowercase
     qty = db.Column(db.Integer, nullable=False)
-    unit_price = db.Column(db.Float, nullable=False)
-    net_price = db.Column(db.Float, nullable=False)
-    total = db.Column(db.Float, nullable=False)
+    unit_price = db.Column(db.Float, nullable=False)        
     product_name=db.Column(db.String(50), nullable=False)
     color = db.Column(db.String(20), nullable=False)
     power = db.Column(db.String(20), nullable=False)

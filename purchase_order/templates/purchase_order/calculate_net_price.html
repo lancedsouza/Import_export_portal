@@ -2,51 +2,43 @@
 {% block title %} Purchase Order {% endblock %}
 
 {% block content %}
-<a href="{{ url_for('calculate_net_price.calculate_net_price') }}">Calculate Net Price</a>
+<a >Calculate Net Price</a>
 
     <!-- Link to the total route -->
   
     <h1>Purchase Order</h1>
 
-    <p>Date: {{ date }}</p>
-    <p>Supplier Name: {{ supplier_name }}</p>
-    <p>Supplier Address: {{ supplier_address }}</p>
-
+    <p>Date: {{purchase_orders.date}}</p>
     <table>
         <thead>
             <tr>
+                <th>Reference_number</th>
+                <th>Date</th>
                 <th>Serial Number</th>
-                <th>Name of the Item</th>
-                <th>EAN CODE</th>
-                <th>Color</th>
-                <th>Power</th>
-                <th>Label</th>
-                <th>Packing</th>
-                <th>Qty</th>
+                <th>Supplier Name</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
                 <th>Unit Price</th>
+                <th>Net Price</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in purchase_order %}
-                <tr>
-                    <td>{{ item.serial_number }}</td>
-                    <td>{{ item.product_name }}</td>
-                    <td>{{ item.EAN_CODE }}</td>
-                    <td>{{ item.color }}</td>
-                    <td>{{ item.power }}</td>
-                    <td>{{ item.label }}</td>
-                    <td>{{ item.packing }}</td>
-                    <td>{{ item.qty }}</td>
-                    <td>{{ item.unit_price }}</td>
-                    <td>{{ item.net_price }}</td>
-                </tr>
+            {% for order in purchase_orders%}
+            <tr>
+                <td>{{ order.reference_num}}</td>
+                <td>{{ order.date }}</td>                
+                <td>{{ order.serial_number }}</td>
+                <td>{{ order.supplier_name }}</td>
+                <td>{{ order.product_name }}</td>
+                <td>{{ order.qty }}</td>
+                <td>{{ order.unit_price }}</td>
+                <td>{{ order.net_price }}</td>
+            </tr>
             {% endfor %}
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="8">Total</td>
-                <td>{{ total }}</td>
-            </tr>
-        </tfoot>
     </table>
+    <p>Total Net Price: {{ total_net_price }}</p>
+    <p>Total Quantity: {{ total_quantity }}</p>
+    <p>Total Cost: {{ total_cost }}</p>
+</body>
 {% endblock %}

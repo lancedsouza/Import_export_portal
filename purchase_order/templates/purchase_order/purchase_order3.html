@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Form</title>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST" action="{{ url_for('purchase_order.purchase_order') }}">
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+        <label for="ref">Reference Number:</label>
+        <td><input type="text" name="Reference_number" ></td>
+        <input type="number" name="num_input" value="{{num_products}}" required>
+
+        {% if num_products %}
+        <p>num_products={{ num_products }}</p>
+        {% endif %}
+
+
+        <hr>
+
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Serial Number</th>
+                    <th>Supplier Name</th>
+                    <th>Supplier Address</th>
+                    <th>Name of the Item</th>
+                    <th>EAN CODE</th>
+                    <th>Color</th>
+                    <th>Power</th>
+                    <th>Label</th>
+                    <th>Packing</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Generate rows dynamically based on user input -->
+                {% if num_products %}
+                {% for row_counter in range(num_products) %}
+                <tr>
+                    
+                    <td><input type="number" name="serial_number_{{ row_counter }}"  required></td>
+                    <td><input type="text" name="supplier_name_{{ row_counter }}" required></td>
+                    <td><input type="text" name="supplier_address_{{ row_counter }}" required></td>
+                    <td><input type="text" name="item_name_{{ row_counter }}" required></td>
+                    <td><input type="text" name="ean_code_{{ row_counter }}" required></td>
+                    <td><input type="text" name="color_{{ row_counter }}" required></td>
+                    <td><input type="text" name="power_{{ row_counter }}" required></td>
+                    <td><input type="text" name="label_{{ row_counter }}" required></td>
+                    <td><input type="text" name="packing_{{ row_counter }}" required></td>
+                    <td><input type="number" name="qty_{{ row_counter }}"  required></td>
+                    <td><input type="number" name="unit_price_{{ row_counter }}" required></td>
+                </tr>
+                
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        <input type="submit" value="Submit Order">
+    </form>
+</body>
+
+</html>

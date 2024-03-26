@@ -1,6 +1,8 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,request
 from flask import get_flashed_messages
+from sqlalchemy import func
 # from my_project.purchase_order.forms import InforForm
+from sqlalchemy import insert 
 from my_project import db
 from my_project.models import PurchaseOrder
 from my_project.models import Supplier
@@ -11,105 +13,72 @@ purchase_order_blueprint = Blueprint('purchase_order',__name__,template_folder='
 success_blueprint= Blueprint('success',__name__,template_folder='templates/success')
 purchase_order_form_blueprint =Blueprint('purchase_order_form',__name__,template_folder='templates/purchase_order2')
 calculate_net_price_blueprint=Blueprint('calculate_net_price',__name__,template_folder='templates/calculate_net_price')
-
+enter_num_blueprint=Blueprint('enter_num',__name__,template_folder='templates/enter_num')
 
 @purchase_order_blueprint.route('/purchase_order', methods=['POST', 'GET'])
 def purchase_order():
-    print("Entering purchase_order function")
-
     if request.method == 'POST':
-        print("Form Data:", request.form)
-
+        num_products_str=request.form.get('num_input')
+        reference_num=request.form.get('Reference_number')
+        num_products=int(num_products_str)
+        print(f'Just checking if num_products is a {num_products}')
         date_str = request.form.get("date")
         date = datetime.strptime(date_str, '%Y-%m-%d').date()
 
         # Extract form data for each row
-        # Counter for tracking the row number
-        row_counter = 1
-        serial_numbers = []
-        print(serial_numbers)
-        product_names = []
-        ean_codes = []
-        colors = []
-        powers = []
-        labels = []
-        packings = []
-        qtys = []
-        supplier_names = []
-        supplier_addresses = []
-        unit_prices = []
+        for row_counter in range(num_products):  # Assuming you have 5 rows
+            form_data = {
+                'reference_num':reference_num,
+                'date': date,
+                'serial_number': request.form.get(f"serial_number_{row_counter}"),
+                'supplier_name': request.form.get(f"supplier_name_{row_counter}"),
+                'supplier_address': request.form.get(f"supplier_address_{row_counter}"),
+                'product_name': request.form.get(f"item_name_{row_counter}"),
+                'ean_code': request.form.get(f"ean_code_{row_counter}"),
+                'color': request.form.get(f"color_{row_counter}"),
+                'power': request.form.get(f"power_{row_counter}"),
+                'label': request.form.get(f"label_{row_counter}"),
+                'packing': request.form.get(f"packing_{row_counter}"),
+                'qty': request.form.get(f"qty_{row_counter}"),
+                'unit_price': request.form.get(f"unit_price_{row_counter}")
+            }
+             
+            print("Form Data:", request.form)
 
-        # Loop until all rows are processed
-        while len(request.form.getlist('serial_number')) >= row_counter:
-            serial_number = request.form.get(f'serial_number_{row_counter}')
-            print(f"this is serial number{row_counter}")
-            product_name = request.form.get(f'product_name_{row_counter}')
-            ean_code = request.form.get(f'EAN_CODE_{row_counter}')
-            color = request.form.get(f'color_{row_counter}')
-            power = request.form.get(f'power_{row_counter}')
-            label = request.form.get(f'label_{row_counter}')
-            packing = request.form.get(f'packing_{row_counter}')
-            qty = request.form.get(f'Qty_{row_counter}')
-            supplier_name = request.form.get(f'Supplier_Name_{row_counter}')
-            supplier_address = request.form.get(f'address_{row_counter}')
-            unit_price = request.form.get(f'Unit_Price_{row_counter}')
+            # Create a PurchaseOrder instance and add it to the database
+            purchase_order = PurchaseOrder(**form_data)
+            print([purchase_order])
+            db.session.add(purchase_order)
+            print(purchase_order.order_id)
 
-            # Append the extracted data to the respective lists
-            serial_numbers.append(serial_number)
-            product_names.append(product_name)
-            ean_codes.append(ean_code)
-            colors.append(color)
-            powers.append(power)
-            labels.append(label)
-            packings.append(packing)
-            qtys.append(qty)
-            supplier_names.append(supplier_name)
-            supplier_addresses.append(supplier_address)
-            unit_prices.append(unit_price)
+        # Commit changes to the database
+        db.session.commit()
 
-            row_counter += 1
-
-        # Calculate Net Price and total
-        net_prices = [float(unit_price) * float(qty) for unit_price, qty in zip(unit_prices, qtys)]
         
+    return redirect(url_for('calculate_net_price.calculate_net_price'))  # Redirect to the home page if not a POST request
 
-        import sqlite3
 
-        # Assuming you have already created the database file (e.g., my_database.db)
-        db_path = 'C:\\Users\\Wishes Lawrence\\Desktop\\lace-data1\\Desktop\\Import_Software\\my_project\\data.sqlite3'
-        db_connection = sqlite3.connect(db_path)
-        db_cursor = db_connection.cursor()
+@calculate_net_price_blueprint.route('/calculate_net_price', methods=['POST', 'GET'])
+def calculate_net_price():
+    # Query the database to retrieve purchase orders
+    purchase_orders = PurchaseOrder.query.all()
 
-        # Iterate through the zipped values and execute an insert statement for each row
-        purchase_orders = list(zip(
-            serial_numbers, product_names, colors, powers, labels, ean_codes, packings, qtys,
-            supplier_names, supplier_addresses, unit_prices, net_prices
-        ))
-        print(f'list for {purchase_orders}')
+    # Initialize variables for total net price and total quantity
+    total_net_price = 0
+    total_quantity = 0
 
-        try:
-            # Use executemany to insert multiple rows at once
-            insert_query = """
-                INSERT INTO purchase_order
-                (serial_number, product_name, date, color, power, label, ean_code, packing, qty, supplier_name, supplier_address, unit_price, net_price, total)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            db_cursor.execute(insert_query, purchase_orders)
+    # Calculate net price for each purchase order and update totals
+    for purchase_order in purchase_orders:
+        purchase_order.net_price = purchase_order.qty * purchase_order.unit_price
+        total_net_price += purchase_order.net_price
+        total_quantity += purchase_order.qty
 
-            # Commit the changes to the database
-            db_connection.commit()
-            flash("Orders added successfully!", "success")
-        except Exception as e:
-            # Rollback changes in case of an error
-            db_connection.rollback()
-            flash(f"Error adding orders: {e}", "error")
-        finally:
-            # Close the cursor and connection
-            db_cursor.close()
-            db_connection.close()
+    # Assuming no discounts or taxes applied, the total net price equals the total cost
+    total_cost = total_net_price
 
-    return redirect(url_for('calculate_net_price.calculate_net_price'))
-
+    # Pass data to the template for rendering
+    return render_template("calculate_net_price.html", purchase_orders=purchase_orders,
+                           total_net_price=total_net_price, total_quantity=total_quantity, total_cost=total_cost)
 
 
 @success_blueprint.route('/success', methods=['POST', 'GET'])
@@ -120,17 +89,15 @@ def success():
 
 
 
-@calculate_net_price_blueprint.route('/calculate_net_price', methods=['GET', 'POST'])
-def calculate_net_price():
-  
-    # Retrieve data from the database, for example, all PurchaseOrders
-    purchase_orders = PurchaseOrder.query.all()
-
-    
-    # Pass data to the template    
-    return render_template('calculate_net_price.html') 
 
 
-@purchase_order_form_blueprint.route('/purchase_order_form')
+@purchase_order_form_blueprint.route('/purchase_order_form', methods=['POST', 'GET'])
 def purchase_order_form():
-    return render_template('purchase_order2.html')
+    if  request.method == 'POST':
+        num_products=request.form.get('num_input')
+    return render_template('purchase_order3.html',num_products=int(num_products))
+
+@enter_num_blueprint.route('/enter_num')
+def enter_num():
+    return render_template('enter_num.html')
+   

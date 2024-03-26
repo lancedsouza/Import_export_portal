@@ -55,148 +55,151 @@
         
    
 
-        <table id="data-table">
-            <thead>
-                <!-- Add your table header here if needed -->
-                <tr>  
-                    <th>Date</th> 
-                    <th>Serial Number</th>
-                    <th>Supplier_Name</th> 
-                    <th>Supplier_Address</th>             
-                    <th>Name of the Item</th>
-                    <th>EAN CODE</th>
-                    <th>Color</th>
-                    <th>Power</th>
-                    <th>Label</th>
-                    <th>Packing</th>
-                    <th>Qty</th>
-                    <th>Unit Price</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Add your table data dynamically here -->
-                <form method="POST" action="{{ url_for('purchase_order.purchase_order') }}">
-                <tr>
-                    <td>
-                        <input type="date" name="date" id="date" required>
-                    </td>
-
-                    <td>
-                        <input type="number" name="serial_number_1" class="sr.no" min="1" required>
-                    </td>
-
-                    <td>
-                       
-                        <input type="text" name="Supplier_Name_1" id="Supplier_Name" required>
-                    </td>                    
-                     
-
-                    <td>
-                    
-                     <input type="text" name="address_1" id="address" required>
-                   </td>
-
-                    
-                    <td>
-                        <textarea name="product_name_1" class="product_name" required></textarea>
-                    </td>
-                    <td>
-                        <textarea name="EAN_CODE_1" class="ean_code[]" required></textarea>
-                    </td>
-                    <td>
-                        <input type="text" name="color_1" class="color"  required>
-                    </td>
-                    <td>
-                        <input type="text" name="power_1" class="power"  required>
-                    </td>
-                    <td>
-                        <input type="text" name="label_1" class="label"  required>
-                    </td>
-                    <td>
-                        <input type="text" name="packing_1" class="packing"  required>
-                    </td>
-                    
-                    <td>
-                        <input type="number" name="Qty_1" class="quantity"  min="1" required>
+            <table id="data-table">
+                <thead>
+                    <!-- Add your table header here if needed -->
+                    <tr>  
+                        <th>Date</th> 
+                        <th>Serial Number</th>
+                        <th>Supplier_Name</th> 
+                        <th>Supplier_Address</th>             
+                        <th>Name of the Item</th>
+                        <th>EAN CODE</th>
+                        <th>Color</th>
+                        <th>Power</th>
+                        <th>Label</th>
+                        <th>Packing</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
                         
-                    </td>                    
-                    
-                    <td>
-                        <input type="number" name="Unit_Price_1" class="unit_price"   min="1" step="0.01" required>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add your table data dynamically here -->
+                    <form method="POST" action="{{ url_for('purchase_order.purchase_order') }}">
+                    <tr>
+                        <td>
+                            <input type="date" name="date" id="date" required>
+                        </td>
+
+                        <td>
+                            <input type="number" name="serial_number" class="sr.no" min="1" required>
+                        </td>
+
+                        <td>
+                        
+                            <input type="text" name="Supplier_Name_1" id="Supplier_Name" required>
+                        </td>                    
+                        
+
+                        <td>
+                        
+                        <input type="text" name="address_1" id="address" required>
                     </td>
-                             
-                    <td>
-                        <input type = button class = "del_row" value="Delete Row" onclick="deleteRow(this)"></button>
-                    </td>
-                    
-                </tr>
-            </tbody>
-                <tfoot>
-                <td>              
-                    <input type="button" class="add_row" value="Add Row" onclick="addRow()"></button>
-                    </td>
-                        <input type="submit" value="Submit Order">
-                    </td>
-                </tr>
-            </tfoot>>
-       
-        </form>
-        </table>
+
+                        
+                        <td>
+                            <textarea name="product_name_1" class="product_name" required></textarea>
+                        </td>
+                        <td>
+                            <textarea name="EAN_CODE_1" class="ean_code[]" required></textarea>
+                        </td>
+                        <td>
+                            <input type="text" name="color_1" class="color"  required>
+                        </td>
+                        <td>
+                            <input type="text" name="power_1" class="power"  required>
+                        </td>
+                        <td>
+                            <input type="text" name="label_1" class="label"  required>
+                        </td>
+                        <td>
+                            <input type="text" name="packing_1" class="packing"  required>
+                        </td>
+                        
+                        <td>
+                            <input type="number" name="Qty_1" class="quantity"  min="1" required>
+                            
+                        </td>                    
+                        
+                        <td>
+                            <input type="number" name="Unit_Price_1" class="unit_price"   min="1" step="0.01" required>
+                        </td>
+                                
+                        <td>
+                            <input type = button class = "del_row" value="Delete Row" onclick="deleteRow(this)"></button>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+                    <tfoot>
+                    <td>              
+                        <input type="button" class="add_row" value="Add Row" onclick="addRow()"></button>
+                        </td>
+                            <input type="submit" value="Submit Order">
+                        </td>
+                    </tr>
+                    </tfoot>
         
-    </div>
-   <!-- Inside the addRow() function -->
-<!-- Inside the addRow() function -->
-<!-- Inside the addRow() function -->
-<script>
-    var rowCounter = 2; // Initialize the counter to 2
+        
+            </table>
+        </form>
+            
+        </div>
+    
+    <!-- Inside the addRow() function -->
+    <!-- Inside the addRow() function -->
+    <!-- Inside the addRow() function -->
+    <script>
+        var rowCounter = 2; // Initialize the counter to 2
 
-    function addRow() {
-        var table = document.getElementById("data-table").getElementsByTagName('tbody')[0];
-        var newRow = table.insertRow(table.rows.length);
+        function addRow() {
+            var table = document.getElementById("data-table").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
 
-        // Skip the first cell for Date and insert cells for the rest of the row
-        for (var i = 0; i < 12; i++) {
-            var cells = newRow.insertCell(i);
-            switch (i) {
-                
-                case 1:
-                    cells.innerHTML = '<input type="number" name="serial_number_' + rowCounter + '" class="sr.no" min="1" required>';
-                    break;
-                case 2:
-                    cells.innerHTML = '<input type="text" name="supplier_name_' + rowCounter + '" class="supplier_name"  required>';
-                    break;
-                case 3:
-                    cells.innerHTML = '<input type="text" name="address_' + rowCounter + '" class="address"  required>';
-                    break;
-                case 4:
-                    cells.innerHTML = '<textarea name="product_name_' + rowCounter + '" class="product_name" required></textarea>';
-                    break;
-                case 5:
-                    cells.innerHTML = '<textarea name="EAN_CODE_' + rowCounter + '" class="ean_code" required></textarea>';
-                    break;
-                case 6:
-                    cells.innerHTML = '<input type="text" name="color_' + rowCounter + '" class="color" required>';
-                    break;
-                case 7:
-                    cells.innerHTML = '<input type="text" name="power_' + rowCounter + '" class="power" required>';
-                    break;
-                case 8:
-                    cells.innerHTML = '<input type="text" name="label_' + rowCounter + '" class="label" required>';
-                    break;
-                case 9:
-                    cells.innerHTML = '<input type="text" name="packing_' + rowCounter + '" class="packing" required>';
-                    break;
-                case 10:
-                    cells.innerHTML = '<input type="number" name="Qty_' + rowCounter + '" class="quantity"  min="1" required>';
-                    break;
-                case 11:
-                    cells.innerHTML = '<input type="number" name="Unit_Price_' + rowCounter + '" class="unit_price"  min="1" step="0.01" required>';
-                    break;
-                default:
-                    break;
+            // Skip the first cell for Date and insert cells for the rest of the row
+            for (var i = 0; i < 12; i++) {
+                var cells = newRow.insertCell(i);
+                switch (i) {
+                    
+                    case 1:
+                        cells.innerHTML = '<input type="number" name="serial_number" class="sr.no" min="1" required>';
+                        break;
+                    case 2:
+                        cells.innerHTML = '<input type="text" name="supplier_name_' + rowCounter + '" class="supplier_name"  required>';
+                        break;
+                    case 3:
+                        cells.innerHTML = '<input type="text" name="address_' + rowCounter + '" class="address"  required>';
+                        break;
+                    case 4:
+                        cells.innerHTML = '<textarea name="product_name_' + rowCounter + '" class="product_name" required></textarea>';
+                        break;
+                    case 5:
+                        cells.innerHTML = '<textarea name="EAN_CODE_' + rowCounter + '" class="ean_code" required></textarea>';
+                        break;
+                    case 6:
+                        cells.innerHTML = '<input type="text" name="color_' + rowCounter + '" class="color" required>';
+                        break;
+                    case 7:
+                        cells.innerHTML = '<input type="text" name="power_' + rowCounter + '" class="power" required>';
+                        break;
+                    case 8:
+                        cells.innerHTML = '<input type="text" name="label_' + rowCounter + '" class="label" required>';
+                        break;
+                    case 9:
+                        cells.innerHTML = '<input type="text" name="packing_' + rowCounter + '" class="packing" required>';
+                        break;
+                    case 10:
+                        cells.innerHTML = '<input type="number" name="Qty_' + rowCounter + '" class="quantity"  min="1" required>';
+                        break;
+                    case 11:
+                        cells.innerHTML = '<input type="number" name="Unit_Price_' + rowCounter + '" class="unit_price"  min="1" step="0.01" required>';
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
+                 
 
         // Add a cell for the "Delete Row" button
         var deleteCell = newRow.insertCell(12);
