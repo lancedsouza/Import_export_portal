@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Purchase Order {% endblock %}
+
+{% block content %}
+<a >Calculate Net Price</a>
+
+    <!-- Link to the total route -->
+  
+    <h1>Purchase Order</h1>
+
+    <p>Date: {{po_view.date}}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Reference_number</th>
+                <th>Date</th>
+                <th>Serial Number</th>
+                <th>Supplier Name</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Net Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in po_view %}
+            <tr>
+                <td>{{ order.reference_num}}</td>
+                <td>{{ order.date }}</td>                
+                <td>{{ order.serial_number }}</td>
+                <td>{{ order.supplier_name }}</td>
+                <td>{{ order.product_name }}</td>
+                <td>{{ order.qty }}</td>
+                <td>{{ order.unit_price }}</td>
+                <td>{{ order.net_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total Net Price: {{ total_net_price }}</p>
+    <p>Total Quantity: {{ total_quantity }}</p>
+    <p>Total Cost: {{ total_cost }}</p>
+</body>
+{% endblock %}

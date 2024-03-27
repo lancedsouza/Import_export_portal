@@ -45,7 +45,7 @@ class Products(db.Model):
 
 class PurchaseOrder(db.Model):
     __tablename__ = 'purchase_order'
-    reference_num=db.Column(db.String(50), nullable=False)
+    reference_num=db.Column(db.String(50), nullable=False,primary_key=True)
     order_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)  # Added date column
     serial_number = db.Column(db.Integer, nullable=False)

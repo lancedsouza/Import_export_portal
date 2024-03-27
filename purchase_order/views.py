@@ -14,6 +14,11 @@ success_blueprint= Blueprint('success',__name__,template_folder='templates/succe
 purchase_order_form_blueprint =Blueprint('purchase_order_form',__name__,template_folder='templates/purchase_order2')
 calculate_net_price_blueprint=Blueprint('calculate_net_price',__name__,template_folder='templates/calculate_net_price')
 enter_num_blueprint=Blueprint('enter_num',__name__,template_folder='templates/enter_num')
+view_po_blueprint=Blueprint('view_po',__name__,template_folder='templates/view_po')
+enter_po_num_blueprint=Blueprint('enter_po_num',__name__,template_folder='templates/enter_po_num')
+
+
+
 
 @purchase_order_blueprint.route('/purchase_order', methods=['POST', 'GET'])
 def purchase_order():
@@ -101,3 +106,33 @@ def purchase_order_form():
 def enter_num():
     return render_template('enter_num.html')
    
+from flask import request
+
+@view_po_blueprint.route('/view_po', methods=['POST', 'GET'])
+def view_po():
+    # Query purchase orders by reference number
+    if request.method == 'POST':
+        reference_num = request.form.get('Reference_number')
+        po_view = PurchaseOrder.query.filter_by(reference_num=reference_num).all()
+        
+        # Initialize variables for total net price and total quantity
+        total_net_price = 0
+        total_quantity = 0
+
+        # Calculate net price for each purchase order and update totals
+        for purchase_order in po_view:
+            purchase_order.net_price = purchase_order.qty * purchase_order.unit_price
+            total_net_price += purchase_order.net_price
+            total_quantity += purchase_order.qty
+
+        # Assuming no discounts or taxes applied, the total net price equals the total cost
+        total_cost = total_net_price
+
+        return render_template('view_purchase_order.html', po_view=po_view, reference_num=reference_num, total_cost=total_cost)
+    else:
+        # Handle GET request (display the form)
+        return render_template('enter_po_num.html')
+
+@enter_po_num_blueprint.route('/enter_po_num')
+def enter_po_num():
+    return render_template('enter_po_num.html')
