@@ -1,0 +1,10 @@
+{% block content%} 
+
+    <!-- Include this form in your template where the user can input the 'num' value -->
+    <form action="{{ url_for('view_products_name.view_products_name')}}" method="POST">
+        <label for="Product_name">Enter Product name:</label>
+        <input type="text" name="Product_name" id="Product_name" required>
+        <input type="submit" value="Go">
+    </form>
+
+    {% endblock %}

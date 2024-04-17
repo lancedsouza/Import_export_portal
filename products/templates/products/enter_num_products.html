@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} Enter the Num of products you want to add {% endblock %}
+
+{% block content%} 
+
+<!-- Include this form in your template where the user can input the 'num' value -->
+<form  method="POST" action="{{ url_for('enter_products_form.enter_products_form')}}">
+    <label for="num_input">Enter num of Products:</label>
+    <input type="number" name="num_input" id="num_input" required>
+    <input type="submit" value="Go">
+</form>
+
+{% endblock %}

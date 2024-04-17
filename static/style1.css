@@ -13,12 +13,16 @@
 }
 
 .content {
-    flex: 1; /* Takes up remaining space */
+    flex-grow: 1; /* Takes up remaining space */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 15px;
+
+
 }
+
+
 
 img {
     max-width: 100%; /* Ensure the image doesn't exceed its container */

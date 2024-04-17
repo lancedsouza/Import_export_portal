@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %} Purchase Order {% endblock %}
+
+{% block content %}
+<a >View Product </a>
+
+    <!-- Link to the total route -->
+  
+    <h1>Product Details</h1>
+
+    <p>Date: {{product_view.date}}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Reference_number</th>
+                <th>Date</th>
+                <th>Serial Number</th>
+                <th>Supplier ID</th>
+                <th>Product Name</th>
+                <th>Product Category</th>
+                <th>Product Vertical</th>
+                <th>EAN Code</th>
+                <th>Color</th>
+                <th>Power</th>
+                <th>Packing</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in product_view %}
+            <tr>
+                <td>{{ product.reference_num}}</td>
+                <td>{{ product.date }}</td>                
+                <td>{{ product.serial_number }}</td>
+                <td>{{ product.supplier_id }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_category }}</td>
+                <td>{{ product.product_vertical }}</td>
+                <td>{{ product.ean_code }}</td>
+                <td>{{ product.color }}</td>
+                <td>{{ product.power }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.packing }}</td>
+                <td>{{ product.qty }}</td>
+                <td>{{ product.unit_price }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total Net Price: {{ net_price }}</p>
+    <p>Total Quantity: {{ net_quantity }}</p>
+    <p>Total Cost: {{ total_cost }}</p>
+</body>
+{% endblock %}

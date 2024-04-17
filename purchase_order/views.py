@@ -36,9 +36,9 @@ def purchase_order():
                 'reference_num':reference_num,
                 'date': date,
                 'serial_number': request.form.get(f"serial_number_{row_counter}"),
-                'supplier_name': request.form.get(f"supplier_name_{row_counter}"),
-                'supplier_address': request.form.get(f"supplier_address_{row_counter}"),
+                'supplier_name': request.form.get(f"supplier_name_{row_counter}"),                
                 'product_name': request.form.get(f"item_name_{row_counter}"),
+                'product_category':request.form.get(f"product_category{row_counter}"),
                 'ean_code': request.form.get(f"ean_code_{row_counter}"),
                 'color': request.form.get(f"color_{row_counter}"),
                 'power': request.form.get(f"power_{row_counter}"),
@@ -59,8 +59,7 @@ def purchase_order():
         # Commit changes to the database
         db.session.commit()
 
-        
-    return redirect(url_for('calculate_net_price.calculate_net_price'))  # Redirect to the home page if not a POST request
+        return redirect(url_for('calculate_net_price.calculate_net_price'))  # Redirect to the home page if not a POST request
 
 
 @calculate_net_price_blueprint.route('/calculate_net_price', methods=['POST', 'GET'])

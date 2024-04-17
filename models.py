@@ -5,7 +5,8 @@ from my_project import db
 
 class Supplier(db.Model):
     __tablename__ = 'supplier'
-
+    serial_number = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date) 
     supplier_id = db.Column(db.Integer, primary_key=True, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))  # Make sure 'id' is lowercase
     supplier_name = db.Column(db.String(50), nullable=False)
@@ -19,9 +20,11 @@ class Supplier(db.Model):
 class Products(db.Model):
     __tablename__ = 'products'
 
+    date = db.Column(db.Date) 
     id = db.Column(db.Integer, primary_key=True)
-    
+    serial_number = db.Column(db.Integer, nullable=False)
     product_name = db.Column(db.String(255), nullable=False)
+    supplier_id=Column(Integer, ForeignKey('supplier.supplier_id'))
     product_category = db.Column(db.String(50), nullable=True)
     product_vertical = db.Column(db.String(20), nullable=True)
     ean_code = db.Column(db.String(20), nullable=False)
@@ -34,14 +37,13 @@ class Products(db.Model):
     currency = db.Column(db.String(50), nullable=True)
     qty = db.Column(db.Integer, nullable=False)
 
-    # One to One relationship
+    # One to Many relationship
     
-    supplier = db.relationship('Supplier', backref='products', uselist=False)
-    # One to one relationship
-    purchase_order=db.relationship('PurchaseOrder',backref='purchase_order',uselist=False)
+    # One to Many relationship
+    purchase_order = db.relationship('PurchaseOrder', backref='products', foreign_keys='PurchaseOrder.product_id')
 
     def __repr__(self):
-        return f"Product name is {self.product_name} product_id is {self.id} and supplier is {self.supplier.supplier_name}, supplier_id is {self.supplier.supplier_id} and quantity is {self.qty}"
+        return f"Product name is {self.product_name} product_id is {self.id} and  supplier_id is {self.supplier_id} and quantity is {self.qty}"
 
 class PurchaseOrder(db.Model):
     __tablename__ = 'purchase_order'
